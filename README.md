@@ -26,7 +26,7 @@ This is a parody/tribute site inspired by [justfuckingusehtml.com](https://justf
 - **The real problem** - It's not the tools, it's you (but we say it nicely... ish)
 
 ### Technical Stuff:
-- Pure HTML/CSS/JavaScript (no frameworks, because irony)
+- Pure /CSS/JavaScript (no frameworks, because irony)
 - Custom syntax highlighting with Prism.js
 - Brutalist/retro design with orange-brown bear theme
 - Bebas Neue + Work Sans font combo
@@ -44,7 +44,7 @@ Because:
 
 ## 📦 What Do You Get?
 
-A single `justfuckingusezustand.html` file that you can:
+A single `index.html` file that you can:
 - Open directly in any browser
 - Host on GitHub Pages
 - Deploy to Netlify or whatever you want with zero config
@@ -62,13 +62,13 @@ cd just-fucking-use-zustand
 
 # Open the file in your browser
 # Windows:
-start justfuckingusezustand.html
+start index.html
 
 # macOS:
-open justfuckingusezustand.html
+open index.html
 
 # Linux:
-xdg-open justfuckingusezustand.html
+xdg-open index.html
 ```
 
 Or just download the HTML file and double-click it like it's 2005. We're not your parents.
