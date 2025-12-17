@@ -4,6 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JUST FUCKING USE ZUSTAND</title>
+    
+    <!-- Favicon as emoji -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐻</text></svg>">
+    
+    <!-- Open Graph / Social Media Meta Tags -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="JUST FUCKING USE ZUSTAND">
+    <meta property="og:description" content="A brutally honest guide to why you should stop overthinking and just use Zustand for state management. 🐻">
+    <meta property="og:image" content="https://em-content.zobj.net/source/twitter/376/bear_1f43b.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="JUST FUCKING USE ZUSTAND">
+    <meta name="twitter:description" content="A brutally honest guide to why you should stop overthinking and just use Zustand for state management. 🐻">
+    <meta name="twitter:image" content="https://em-content.zobj.net/source/twitter/376/bear_1f43b.png">
+    <meta name="description" content="Stop drowning in Redux boilerplate. Learn why Zustand is the state management solution you've been looking for.">
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Work+Sans:wght@400;600;800&display=swap" rel="stylesheet">
@@ -848,10 +863,12 @@ function AddTodo() {
     </div>
 
     <script>
+        // Update current year dynamically
         const currentYear = new Date().getFullYear();
         const yearElements = document.querySelectorAll('#current-year, #current-year-2');
         yearElements.forEach(el => el.textContent = currentYear);
 
+        // Smooth scroll for navigation
         document.querySelectorAll('nav a').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -863,6 +880,7 @@ function AddTodo() {
             });
         });
 
+        // Add subtle parallax effect to bear emoji
         window.addEventListener('scroll', () => {
             const bear = document.querySelector('.bear-emoji');
             const scrolled = window.pageYOffset;
