@@ -102,7 +102,7 @@ If you're offended by profanity, this probably isn't for you. But if you're tire
 
 ## 🔗 Links
 
-- [Live Site](https://yourdomain.com) (coming soon, probably)
+- [Live Site](https://justfuckingusezustand.com) (coming soon, probably)
 - [Zustand Official Docs](https://zustand.docs.pmnd.rs/)
 - [Zustand GitHub](https://github.com/pmndrs/zustand)
 
