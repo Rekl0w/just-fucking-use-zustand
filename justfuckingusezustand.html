@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JUST FUCKING USE ZUSTAND</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Work+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    
+    <!-- Prism.js for syntax highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-jsx.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-dark: #0a0a0a;
+            --bg-light: #1a1a1a;
+            --accent: #ff6b35;
+            --accent-dark: #cc5529;
+            --text: #ffffff;
+            --text-dim: #b0b0b0;
+            --code-bg: #2a2a2a;
+            --bear-brown: #8b5a3c;
+            --bear-accent: #d4a574;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-light) 100%);
+            color: var(--text);
+            font-family: 'Work Sans', sans-serif;
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 60px 30px;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 80px;
+            position: relative;
+        }
+
+        .bear-emoji {
+            font-size: 120px;
+            display: block;
+            margin-bottom: 20px;
+            animation: bearBounce 2s ease-in-out infinite;
+            filter: drop-shadow(0 10px 30px rgba(255, 107, 53, 0.3));
+        }
+
+        @keyframes bearBounce {
+            0%, 100% {
+                transform: translateY(0) rotate(-2deg);
+            }
+            50% {
+                transform: translateY(-15px) rotate(2deg);
+            }
+        }
+
+        h1 {
+            font-family: 'Bebas Neue', cursive;
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            letter-spacing: 3px;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--bear-accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 80px rgba(255, 107, 53, 0.5);
+            animation: titleGlow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes titleGlow {
+            from {
+                filter: drop-shadow(0 0 10px rgba(255, 107, 53, 0.3));
+            }
+            to {
+                filter: drop-shadow(0 0 30px rgba(255, 107, 53, 0.6));
+            }
+        }
+
+        .subtitle {
+            font-size: 1.3rem;
+            color: var(--text-dim);
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        nav {
+            background: rgba(42, 42, 42, 0.5);
+            backdrop-filter: blur(10px);
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 60px;
+            border: 1px solid rgba(255, 107, 53, 0.2);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        nav a {
+            color: var(--text);
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            font-size: 0.9rem;
+            border: 1px solid transparent;
+        }
+
+        nav a:hover {
+            background: var(--accent);
+            color: var(--bg-dark);
+            border-color: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 53, 0.4);
+        }
+
+        h2 {
+            font-family: 'Bebas Neue', cursive;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            margin: 80px 0 30px;
+            color: var(--accent);
+            letter-spacing: 2px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent) 0%, transparent 100%);
+            border-radius: 2px;
+        }
+
+        h3 {
+            font-family: 'Bebas Neue', cursive;
+            font-size: clamp(1.5rem, 4vw, 2.2rem);
+            margin: 50px 0 20px;
+            color: var(--bear-accent);
+            letter-spacing: 1.5px;
+        }
+
+        p {
+            margin-bottom: 25px;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        strong {
+            color: var(--accent);
+            font-weight: 800;
+        }
+
+        ul:not(nav ul) {
+            margin: 25px 0;
+            padding-left: 30px;
+        }
+
+        li {
+            margin-bottom: 15px;
+            font-size: 1.05rem;
+            position: relative;
+            padding-left: 10px;
+        }
+
+        li::marker {
+            color: var(--accent);
+            font-size: 1.3rem;
+        }
+
+        code {
+            background: var(--code-bg);
+            padding: 3px 8px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95em;
+            color: var(--bear-accent);
+            border: 1px solid rgba(255, 107, 53, 0.2);
+        }
+
+        pre {
+            background: var(--code-bg);
+            padding: 25px;
+            border-radius: 12px;
+            overflow-x: auto;
+            margin: 30px 0;
+            border: 1px solid rgba(255, 107, 53, 0.3);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+
+        pre::before {
+            content: '🐻';
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 1.5rem;
+            opacity: 0.3;
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+            border: none;
+            color: var(--text);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            display: block;
+            white-space: pre;
+        }
+
+        /* Override Prism.js colors to match our theme */
+        code[class*="language-"],
+        pre[class*="language-"] {
+            color: var(--text);
+            background: none;
+            text-shadow: none;
+            font-family: 'Courier New', monospace;
+        }
+
+        .token.comment { color: #666; font-style: italic; }
+        .token.keyword { color: #ff6b6b; font-weight: 600; }
+        .token.function { color: #4ecdc4; }
+        .token.string { color: #95e1d3; }
+        .token.number { color: #ffd93d; }
+        .token.operator { color: #ff6b35; }
+        .token.punctuation { color: #b0b0b0; }
+        .token.class-name { color: #f9ca24; }
+        .token.property { color: #4ecdc4; }
+
+        .highlight {
+            background: linear-gradient(135deg, rgba(255, 107, 53, 0.2) 0%, rgba(139, 90, 60, 0.2) 100%);
+            padding: 30px;
+            border-radius: 12px;
+            margin: 40px 0;
+            border-left: 5px solid var(--accent);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            animation: pulseGlow 4s ease-in-out infinite;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% {
+                box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            }
+            50% {
+                box-shadow: 0 5px 30px rgba(255, 107, 53, 0.4);
+            }
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 100px;
+            padding-top: 50px;
+            border-top: 2px solid rgba(255, 107, 53, 0.3);
+            color: var(--text-dim);
+        }
+
+        .footer a {
+            color: var(--bear-accent);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border-bottom: 2px solid transparent;
+        }
+
+        .footer a:hover {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+            text-shadow: 0 0 10px rgba(255, 107, 53, 0.5);
+        }
+
+        /* Link colors for documentation section */
+        section a {
+            color: var(--bear-accent);
+            text-decoration: none;
+            font-weight: 600;
+            border-bottom: 2px solid var(--bear-accent);
+            transition: all 0.3s ease;
+        }
+
+        section a:hover {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+            text-shadow: 0 0 10px rgba(255, 107, 53, 0.3);
+        }
+
+        .comparison-table {
+            margin: 40px 0;
+            background: var(--code-bg);
+            border-radius: 12px;
+            padding: 25px;
+            border: 1px solid rgba(255, 107, 53, 0.3);
+            overflow-x: auto;
+        }
+
+        .comparison-item {
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(255, 107, 53, 0.1);
+        }
+
+        .comparison-item:last-child {
+            border-bottom: none;
+        }
+
+        .comparison-label {
+            color: var(--accent);
+            font-weight: 800;
+            display: inline-block;
+            min-width: 150px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 40px 20px;
+            }
+
+            nav {
+                margin-top: 20px;
+            }
+
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .bear-emoji {
+                font-size: 80px;
+            }
+        }
+
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Selection */
+        ::selection {
+            background: var(--accent);
+            color: var(--bg-dark);
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-dark);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 6px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-dark);
+        }
+
+        /* Floating GitHub Button */
+        .github-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(42, 42, 42, 0.7);
+            backdrop-filter: blur(10px);
+            padding: 12px 20px;
+            border-radius: 50px;
+            border: 2px solid var(--accent);
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            opacity: 0.8;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .github-button:hover {
+            opacity: 1;
+            background: rgba(42, 42, 42, 0.95);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(255, 107, 53, 0.4);
+        }
+
+        .github-button svg {
+            width: 20px;
+            height: 20px;
+            fill: var(--accent);
+        }
+
+        @media (max-width: 768px) {
+        }
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating GitHub Button -->
+    <a href="https://github.com/Rekl0w/just-fucking-use-zustand" target="_blank" rel="noopener" class="github-button">
+        <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+        </svg>
+        <span>Star on GitHub</span>
+    </a>
+
+    <div class="container">
+        <header class="header">
+            <span class="bear-emoji">🐻</span>
+            <h1>JUST FUCKING USE ZUSTAND</h1>
+            <p class="subtitle">A small, fast, and scalable bearbones state-management solution</p>
+        </header>
+
+        <nav id="start">
+            <ul>
+                <li><a href="#wtf">What the fuck?</a></li>
+                <li><a href="#why">Why use it?</a></li>
+                <li><a href="#when">When to use?</a></li>
+                <li><a href="#how">How to use?</a></li>
+                <li><a href="#problem">The real problem</a></li>
+            </ul>
+        </nav>
+
+        <section id="wtf">
+            <h2>SO, WHAT THE FUCK IS ZUSTAND?</h2>
+            
+            <p>Listen up, you beautiful disaster. You know how you're drowning in Redux boilerplate, wrestling with Context API's re-render hell, or watching your MobX decorators turn into a fucking archaeology expedition? Yeah, I thought so.</p>
+
+            <p>Zustand is here to save your sorry ass. It's a <strong>tiny (1kb)</strong> state management library that doesn't give a fuck about your opinions, doesn't need providers wrapping your entire app like a goddamn burrito, and won't make you write 50 lines of code just to increment a fucking counter.</p>
+
+            <div class="highlight">
+                <p><strong>🐻 Bear necessities for state management in React.</strong></p>
+                <p>That's it. That's the whole fucking pitch. No bullshit, no ceremony, just pure state management goodness that actually makes sense.</p>
+            </div>
+        </section>
+
+        <section id="why">
+            <h2>WHY THE FUCK SHOULD YOU USE ZUSTAND?</h2>
+
+            <h3>BECAUSE REDUX IS KILLING YOUR SOUL, THAT'S WHY</h3>
+            
+            <p>Redux made you write:</p>
+            <ul>
+                <li>Action types that nobody asked for</li>
+                <li>Action creators that make you question your career choices</li>
+                <li>Reducers that are longer than your CV</li>
+                <li>Middleware configurations that require a PhD</li>
+                <li>Boilerplate so thick you could build a fucking house with it</li>
+            </ul>
+
+            <p>Zustand? Create a store. Done. That's it. No ceremony, no bullshit, no existential crisis at 3 AM wondering why you need three files to manage a boolean.</p>
+
+            <pre><code class="language-javascript">// Redux: 50+ lines of bullshit for a counter
+// Zustand: This beautiful bastard right here
+
+import { create } from 'zustand'
+
+const useStore = create((set) => ({
+  bears: 0,
+  increasePopulation: () => set((state) => ({ bears: state.bears + 1 })),
+  removeAllBears: () => set({ bears: 0 }),
+}))
+
+// Use it anywhere, no fucking providers needed
+function BearCounter() {
+  const bears = useStore((state) => state.bears)
+  return &lt;h1&gt;{bears} around here...&lt;/h1&gt;
+}</code></pre>
+
+            <h3>NO MORE CONTEXT HELL, YOU MAGNIFICENT FOOL</h3>
+            
+            <p>Context API seemed like a good idea until you realized:</p>
+            <ul>
+                <li>Every context change re-renders everything like it's 1999</li>
+                <li>You need 17 nested providers making your component tree look like a fucking pyramid scheme</li>
+                <li>Performance optimization requires more mental gymnastics than remembering your ex's birthday</li>
+            </ul>
+
+            <p>Zustand gives you granular subscriptions. Components only re-render when <strong>their specific slice</strong> of state changes. Not the whole fucking store. Not everything under the provider. Just what you asked for.</p>
+
+            <h3>IT'S FUCKING TINY (AND FAST AS HELL)</h3>
+            
+            <p>1 kilobyte. ONE. That's smaller than that image you downloaded of "definitely not a crypto scam." Meanwhile, Redux is sitting at 6kb+ (with Redux Toolkit even more), and MobX is having an identity crisis at 16kb.</p>
+
+            <div class="comparison-table">
+                <div class="comparison-item">
+                    <span class="comparison-label">Zustand:</span> 1kb of pure fucking magic
+                </div>
+                <div class="comparison-item">
+                    <span class="comparison-label">Redux:</span> 6kb+ of ceremony and regret
+                </div>
+                <div class="comparison-item">
+                    <span class="comparison-label">MobX:</span> 16kb of decorators you don't understand
+                </div>
+                <div class="comparison-item">
+                    <span class="comparison-label">Context API:</span> "Free" but costs you in therapy bills
+                </div>
+            </div>
+
+            <h3>NO PROVIDERS, NO FUCKING AROUND</h3>
+            
+            <p>Remember wrapping your entire app in providers like you're gift-wrapping presents for people you don't like?</p>
+
+            <pre><code class="language-javascript">// The Redux nightmare
+&lt;Provider store={store}&gt;
+  &lt;ThemeProvider&gt;
+    &lt;UserProvider&gt;
+      &lt;LocalizationProvider&gt;
+        &lt;FeatureFlagProvider&gt;
+          &lt;App /&gt; {/* Finally! */}
+        &lt;/FeatureFlagProvider&gt;
+      &lt;/LocalizationProvider&gt;
+    &lt;/UserProvider&gt;
+  &lt;/ThemeProvider&gt;
+&lt;/Provider&gt;
+
+// Zustand
+&lt;App /&gt; {/* That's it, you're done */}</code></pre>
+
+            <p>Zustand stores are just hooks. Import them, use them, get on with your fucking life.</p>
+
+            <h3>ASYNC? WHO GIVES A SHIT, JUST DO IT</h3>
+            
+            <p>Redux made you install middleware and write sagas that look like fucking ancient scrolls. Zustand? Just write async functions like a normal human being:</p>
+
+            <pre><code class="language-javascript">const useStore = create((set) => ({
+  fishies: {},
+  fetch: async (pond) => {
+    const response = await fetch(pond)
+    set({ fishies: await response.json() })
+  },
+}))</code></pre>
+
+            <p>No thunks. No sagas. No Redux-Observable. No sacrificing goats to the async gods. Just fucking async/await like it's <span id="current-year">2025</span> (because it is).</p>
+
+            <h3>TYPESCRIPT? OF FUCKING COURSE</h3>
+            
+            <p>Full TypeScript support without the boilerplate ceremony that makes you want to go back to JavaScript like it's 2015:</p>
+
+            <pre><code class="language-javascript">interface BearState {
+  bears: number
+  increase: (by: number) => void
+}
+
+const useBearStore = create&lt;BearState&gt;()((set) => ({
+  bears: 0,
+  increase: (by) => set((state) => ({ bears: state.bears + by })),
+}))</code></pre>
+
+            <h3>DEVTOOLS? FUCK YEAH</h3>
+            
+            <p>Redux DevTools support out of the box. Because sometimes you need to time-travel debug your mistakes (we've all been there):</p>
+
+            <pre><code class="language-javascript">import { devtools } from 'zustand/middleware'
+
+const useStore = create(devtools((set) => ({
+  // Your store
+})))</code></pre>
+
+            <h3>PERSIST? YOU BET YOUR ASS</h3>
+            
+            <p>Want to save state to localStorage? sessionStorage? IndexedDB? Fucking smoke signals? There's middleware for that:</p>
+
+            <pre><code class="language-javascript">import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
+
+const useStore = create(
+  persist(
+    (set) => ({
+      bears: 0,
+      addBear: () => set((state) => ({ bears: state.bears + 1 })),
+    }),
+    {
+      name: 'bear-storage', // unique name
+    },
+  ),
+)</code></pre>
+
+            <h3>LOCALSTORAGE WITHOUT ZUSTAND? ENJOY YOUR FUCKING NIGHTMARE</h3>
+            
+            <p>Let's talk about what happens when you try to manage localStorage yourself like some kind of masochist:</p>
+
+            <pre><code class="language-javascript">// The localStorage hell you're currently living in:
+const [user, setUser] = useState(() => {
+  const saved = localStorage.getItem('user')
+  return saved ? JSON.parse(saved) : null
+})
+
+useEffect(() => {
+  localStorage.setItem('user', JSON.stringify(user))
+}, [user])
+
+// Oh wait, you have 15 more pieces of state? 
+// Copy-paste this shit 15 times, you fucking genius.
+// Don't forget to handle:
+// - Parsing errors (because users WILL fuck with localStorage)
+// - Serialization of complex objects
+// - Hydration mismatches
+// - Race conditions
+// - Storage quota exceeded errors
+// - Multiple tabs syncing
+// And the mental breakdown that comes with all of this</code></pre>
+
+            <p>Now watch Zustand handle ALL of this like a fucking boss:</p>
+
+            <pre><code class="language-javascript">// Zustand: One line and you're done
+import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
+
+const useStore = create(
+  persist(
+    (set) => ({
+      user: null,
+      todos: [],
+      preferences: {},
+      // Add 100 more fields, I don't give a fuck
+      updateUser: (user) => set({ user }),
+    }),
+    {
+      name: 'app-storage', // Everything auto-syncs
+      // It even handles tabs, serialization, errors...
+      // You know, like a PROFESSIONAL library should
+    },
+  ),
+)</code></pre>
+
+            <div class="highlight">
+                <p><strong>LocalStorage sync across tabs?</strong> ✅ Built-in.</p>
+                <p><strong>Serialization errors?</strong> ✅ Handled gracefully.</p>
+                <p><strong>Partial hydration?</strong> ✅ Supported.</p>
+                <p><strong>Custom storage engines?</strong> ✅ IndexedDB, sessionStorage, whatever.</p>
+                <p><strong>Your sanity?</strong> ✅ Actually preserved for once.</p>
+            </div>
+
+            <h3>LEARNING CURVE? WHAT FUCKING CURVE?</h3>
+            
+            <p>Redux: Read 10 articles, watch 5 hours of tutorials, question your sanity, still fuck it up.</p>
+            <p>Zustand: Read the docs for 10 minutes, start coding, succeed immediately, wonder why you wasted years of your life on Redux.</p>
+        </section>
+
+        <section id="when">
+            <h2>WHEN SHOULD YOU JUST FUCKING USE IT?</h2>
+
+            <ul>
+                <li><strong>Always.</strong> Seriously, just use it.</li>
+                <li>When you need <strong>client-side state</strong> that multiple components need to access</li>
+                <li>When Context API is making everything re-render like a fucking strobe light</li>
+                <li>When Redux is making you want to <strong>change careers</strong> to something less painful, like dentistry</li>
+                <li>When you need to share state between <strong>unrelated components</strong> without drilling props through 47 layers</li>
+                <li>When you want <strong>simple async state management</strong> without selling your soul</li>
+                <li>When you're building a <strong>real application</strong> not a fucking todo list tutorial</li>
+                <li>When you value your <strong>sanity, time, and will to live</strong></li>
+            </ul>
+
+            <div class="highlight">
+                <h3>BUT WHAT IF MY APP IS SIMPLE?</h3>
+                <p>Then Zustand is STILL perfect because it's so simple it won't hurt you. It's 1kb. Your favicon is probably bigger. Just use it and stop overthinking, you beautiful overthinker.</p>
+            </div>
+
+            <div class="highlight">
+                <h3>WHAT IF MY APP IS COMPLEX?</h3>
+                <p>Then you DEFINITELY need Zustand because Redux will make you want to die and Context will make everything slower than your grandma on dial-up. Zustand scales beautifully without the pain.</p>
+            </div>
+        </section>
+
+        <section id="how">
+            <h2>HOW THE FUCK DO YOU USE IT?</h2>
+
+            <h3>STEP 1: INSTALL IT (DUH)</h3>
+            <pre><code class="language-bash">npm install zustand
+# or if you're a yarn person (no judgment)
+yarn add zustand
+# or if you're living in the future with pnpm
+pnpm add zustand
+# or if you're a speed demon with bun
+bun add zustand</code></pre>
+
+            <div class="highlight">
+                <p><strong>Bun users:</strong> You beautiful speed freaks. Zustand works perfectly with Bun's blazing-fast runtime. Install it, use it, marvel at how fast everything is, and feel superior to npm peasants. You've earned it.</p>
+            </div>
+
+            <h3>STEP 2: CREATE A STORE</h3>
+            <pre><code class="language-javascript">import { create } from 'zustand'
+
+const useTodoStore = create((set) => ({
+  todos: [],
+  addTodo: (text) => set((state) => ({ 
+    todos: [...state.todos, { id: Date.now(), text, done: false }] 
+  })),
+  toggleTodo: (id) => set((state) => ({
+    todos: state.todos.map(todo =>
+      todo.id === id ? { ...todo, done: !todo.done } : todo
+    )
+  })),
+  deleteTodo: (id) => set((state) => ({
+    todos: state.todos.filter(todo => todo.id !== id)
+  })),
+}))</code></pre>
+
+            <h3>STEP 3: USE IT IN YOUR COMPONENTS</h3>
+            <pre><code class="language-javascript">function TodoList() {
+  // Select only what you need
+  const todos = useTodoStore((state) => state.todos)
+  const toggleTodo = useTodoStore((state) => state.toggleTodo)
+  const deleteTodo = useTodoStore((state) => state.deleteTodo)
+
+  return (
+    &lt;ul&gt;
+      {todos.map(todo => (
+        &lt;li key={todo.id}&gt;
+          &lt;input 
+            type="checkbox" 
+            checked={todo.done}
+            onChange={() => toggleTodo(todo.id)}
+          /&gt;
+          {todo.text}
+          &lt;button onClick={() => deleteTodo(todo.id)}&gt;Delete&lt;/button&gt;
+        &lt;/li&gt;
+      ))}
+    &lt;/ul&gt;
+  )
+}
+
+function AddTodo() {
+  const addTodo = useTodoStore((state) => state.addTodo)
+  const [text, setText] = useState('')
+
+  return (
+    &lt;form onSubmit={(e) => {
+      e.preventDefault()
+      addTodo(text)
+      setText('')
+    }}&gt;
+      &lt;input 
+        value={text} 
+        onChange={(e) => setText(e.target.value)} 
+      /&gt;
+      &lt;button&gt;Add&lt;/button&gt;
+    &lt;/form&gt;
+  )
+}</code></pre>
+
+            <h3>STEP 4: ENJOY YOUR LIFE</h3>
+            <p>That's it. You're done. No more steps. Go build something cool instead of configuring state management for 3 hours.</p>
+
+            <div class="highlight">
+                <h3>PRO TIPS FOR THE OVERACHIEVERS</h3>
+                <ul>
+                    <li>Use <code>useShallow</code> from <code>zustand/react/shallow</code> when selecting multiple values to prevent unnecessary re-renders</li>
+                    <li>Middleware stack: <code>devtools</code> + <code>persist</code> + <code>immer</code> = developer happiness</li>
+                    <li>Split large stores into slices and combine them (see the docs, they're actually good)</li>
+                    <li>Use <code>subscribeWithSelector</code> for advanced subscription patterns</li>
+                    <li>Read state outside React with <code>useStore.getState()</code> and <code>useStore.setState()</code></li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="problem">
+            <h2>THE REAL FUCKING PROBLEM ISN'T THE TOOLS. IT'S YOU.</h2>
+
+            <p>Let's be real for a second (just this once).</p>
+
+            <p>Redux isn't bad because it's Redux. It's bad because some architect in 2016 decided every fucking app needs enterprise-level state management for a goddamn landing page.</p>
+
+            <p>Context isn't bad because it's Context. It's bad because you're using it wrong and re-rendering your entire app tree every time someone clicks a button.</p>
+
+            <p><strong>The tool isn't the problem. Using the wrong tool, or using the right tool like a fucking idiot, is the problem.</strong></p>
+
+            <p>Zustand is the right tool for 90% of React apps. It's simple, powerful, and doesn't require a PhD in functional programming to understand.</p>
+
+            <div class="highlight">
+                <h3>BUT CHOOSE WISELY, YOUNG PADAWAN</h3>
+                <ul>
+                    <li><strong>Building a simple static site?</strong> You don't need ANY state management, you delusional architect.</li>
+                    <li><strong>Need to pass 1-2 values down?</strong> Props and context are fine. Stop overengineering.</li>
+                    <li><strong>Building an actual app with real state?</strong> JUST FUCKING USE ZUSTAND.</li>
+                    <li><strong>Building the next Facebook?</strong> Sure, maybe consider Redux or something. But you're not, so don't.</li>
+                </ul>
+            </div>
+
+            <p>Stop cargo-culting tools. Stop using Redux because "that's what we always used." Stop avoiding state management libraries because you read some article about prop drilling being "good enough."</p>
+
+            <p><strong>Use Zustand. It's <span id="current-year-2">2025</span>. State management doesn't need to hurt.</strong></p>
+        </section>
+
+        <section>
+            <h2>STILL NOT CONVINCED? HERE'S THE FUCKING DOCUMENTATION</h2>
+            
+            <p>I can't hold your hand forever, you beautiful disaster. Here's where to learn more:</p>
+            
+            <ul>
+                <li><strong>Official Docs:</strong> <a href="https://zustand.docs.pmnd.rs/" target="_blank" rel="noopener">zustand.docs.pmnd.rs</a></li>
+                <li><strong>GitHub:</strong> <a href="https://github.com/pmndrs/zustand" target="_blank" rel="noopener">github.com/pmndrs/zustand</a></li>
+                <li><strong>Demo:</strong> <a href="https://zustand-demo.pmnd.rs/" target="_blank" rel="noopener">zustand-demo.pmnd.rs</a></li>
+            </ul>
+
+            <p>The docs are actually good. Like, shockingly good. They won't make you want to punch your monitor. Revolutionary, I know.</p>
+        </section>
+
+        <footer class="footer">
+            <p><strong>Created with aggressive love by someone who's tired of Redux boilerplate.</strong></p>
+            <p>Inspired by <a href="https://justfuckingusehtml.com" target="_blank" rel="noopener">justfuckingusehtml.com</a> and <a href="https://justfuckingusereact.com" target="_blank" rel="noopener">justfuckingusereact.com</a></p>
+            <p><strong><a href="https://github.com/Rekl0w/just-fucking-use-zustand" target="_blank" rel="noopener">View the source code on GitHub</a></strong></p>
+            <p style="margin-top: 30px; opacity: 0.6;">Now go build something, you beautiful coder. 🐻</p>
+        </footer>
+    </div>
+
+    <script>
+        const currentYear = new Date().getFullYear();
+        const yearElements = document.querySelectorAll('#current-year, #current-year-2');
+        yearElements.forEach(el => el.textContent = currentYear);
+
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            });
+        });
+
+        window.addEventListener('scroll', () => {
+            const bear = document.querySelector('.bear-emoji');
+            const scrolled = window.pageYOffset;
+            bear.style.transform = `translateY(${scrolled * 0.3}px) rotate(${scrolled * 0.05}deg)`;
+        });
+    </script>
+</body>
+</html>
